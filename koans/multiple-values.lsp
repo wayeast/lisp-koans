@@ -31,18 +31,21 @@ This is distinct from returning a list or structure of values."
 
 (define-test test-multi-value-bind
     (let ((x)
-          (y))
+          (y)
+	  (z))
       (setf x (next-fib 2 3))
-      (assert-equal x ___)
+      (assert-equal x 3)
       (setf x (multiple-value-list (next-fib 2 3)))
-      (assert-equal x ___)
+      (assert-equal x '(3 5))
       "multiple-value-bind binds the variables in the first form
        to the outputs of the second form.  And then returns the output
        of the third form using those bindings"
       (setf y (multiple-value-bind (b c) (next-fib 3 5) (* b c)))
-      (assert-equal y ___)
+      (assert-equal y 40)
       "multiple-value-setq is like setf, but can set multiple variables"
       (multiple-value-setq (x y) (values :v1 :v2))
       (assert-equal (list x y) '(:v1 :v2))
       (multiple-value-setq (x y) (next-fib 5 8))
-      (assert-equal (list x y) ____)))
+      (assert-equal (list x y) '(8 13))
+      (multiple-value-setq (x y z) (values 17 18 19))
+      (assert-equal (list x y z) '(17 18 19))))
